@@ -1,5 +1,5 @@
 from werkzeug import Request, ClosingIterator
-from werkzeug.exceptions import HTTPException, InternalServerError
+from werkzeug.exceptions import HTTPException, InternalServerError, NotFound
 
 
 from urls import url_map
@@ -20,11 +20,14 @@ class Application(object):
       endpoint, values = adapter.match()
       handler = getattr(views, endpoint)
       response = handler(request, **values)
+    except NotFound, e:
+      #response = views.not_found(request)
+      response = views.internal_server_error(request)
     except HTTPException, e:
       response = e
     except:
-      response = InternalServerError()
-    
+      '''5xx'''
+      response = views.internal_server_error(request)
 
     return ClosingIterator(response(environ, start_response), self._cleanup)
 
