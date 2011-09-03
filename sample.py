@@ -2,6 +2,7 @@
 # utf8
 
 
+from werkzeug.debug import DebuggedApplication
 from wsgiref.util import setup_testing_defaults
 from wsgiref.simple_server import make_server
 
@@ -21,6 +22,7 @@ def simple_app(environ, start_response):
 
 #httpd = make_server('', 8000, simple_app)
 wz_test = Application()
+wz_test = DebuggedApplication(wz_test)
 
 httpd = make_server('', 8000, wz_test)
 print "Serving on port 8000..."

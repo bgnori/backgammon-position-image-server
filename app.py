@@ -21,13 +21,13 @@ class Application(object):
       handler = getattr(views, endpoint)
       response = handler(request, **values)
     except NotFound, e:
-      #response = views.not_found(request)
-      response = views.internal_server_error(request)
+      response = views.not_found(request)
+      #response = views.internal_server_error(request)
     except HTTPException, e:
       response = e
     except:
       '''5xx'''
-      response = views.internal_server_error(request)
+      response =  views.internal_server_error(request)
 
     return ClosingIterator(response(environ, start_response), self._cleanup)
 
