@@ -47,7 +47,6 @@ def gnubg(request):
   '''
 
   gnubgid = request.args.get('pid')+':'+request.args.get('mid')
-  print 'gnubgid:', gnubgid
 
   img = model.image(
     gnubgid,
@@ -64,5 +63,31 @@ def gnubg(request):
   }[request.args.get('format')]
 
   return Response(img, mimetype=mimetype)
+
+def xgid(request):
+  '''
+    /xgid?xgid=-b-BBBD-----bC---c-dbBb---%3A0%3A0%3A1%3A00%3A0%3A0%3A0%3A5%3A10%0D%0A
+
+    (urlencoded XGID=-b-BBBD-----bC---c-dbBb---:0:0:1:00:0:0:0:5:10)
+  '''
+
+  img = model.byxgid(
+    request.args.get('xgid'),
+    request.args.get('css'),
+    request.args.get('format'),
+    int(request.args.get('width')),
+    int(request.args.get('height')),
+  )
+
+  mimetype = {
+    'jpeg':'image/jpeg',
+    'png':'image/png',
+    'gif':'image/gif',
+  }[request.args.get('format')]
+
+  return Response(img, mimetype=mimetype)
+
+
+
 
 

@@ -3,6 +3,7 @@ import StringIO
 import bglib.model
 import bglib.model.board
 import bglib.encoding.gnubgid
+import bglib.encoding.xgid
 from bglib.model import constants
 
 
@@ -17,6 +18,14 @@ import bglib.image.resource.neon
 import bglib.image.resource.deutsche
 
 
+def byxgid(xgid, css, format, width, height):
+  b = bglib.model.boardeditor.BoardEditor()
+  bglib.encoding.xgid.decode(b, xgid)
+  b.flip()
+
+  d = get_draw(css)
+  p = get_painter(format)
+  return p(b, d, width, height)
 
 def image(gnubgid, css, format, width, height):
   b = bglib.model.boardeditor.BoardEditor()
