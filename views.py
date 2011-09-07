@@ -39,3 +39,30 @@ def image(request):
 
   return Response(img, mimetype=mimetype)
   
+
+def gnubg(request):
+  '''
+    /gnubg?pid= ZrsFAFju3QECCA&mid=AgEAAAAAAAAA&height=450&width=600&css=deutsche&format=png
+
+  '''
+
+  gnubgid = request.args.get('pid')+':'+request.args.get('mid')
+  print 'gnubgid:', gnubgid
+
+  img = model.image(
+    gnubgid,
+    request.args.get('css'),
+    request.args.get('format'),
+    int(request.args.get('width')),
+    int(request.args.get('height')),
+  )
+
+  mimetype = {
+    'jpeg':'image/jpeg',
+    'png':'image/png',
+    'gif':'image/gif',
+  }[request.args.get('format')]
+
+  return Response(img, mimetype=mimetype)
+
+

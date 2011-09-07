@@ -6,6 +6,9 @@ Started from  sample from http://www.void.in/wiki/Python/Werkzeug
 エーと、まずはurlの再設計が必要。
   * 後方互換性
     アプリでやるか、reverse proxyでやるか？
+    とりあえずアプリでやる。
+
+
 
 
 それからエラーが起きたときに画像を返したい。
@@ -73,5 +76,4 @@ from http://www.studyinghttp.net/cgi-bin/rfc.cgi?2616#Sec7
 
 
 http://werkzeug.pocoo.org/docs/exceptions/
-
 
