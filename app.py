@@ -1,5 +1,5 @@
 from werkzeug import Request, ClosingIterator
-from werkzeug.exceptions import HTTPException, InternalServerError, NotFound
+from werkzeug.exceptions import *
 
 
 from urls import url_map
@@ -22,7 +22,11 @@ class Application(object):
       response = handler(request, **values)
     except NotFound, e:
       response = views.not_found(request)
-      #response = views.internal_server_error(request)
+    except Unauthorized, e:
+      response = views.unauthorized(request)
+    except BadRequest,e :
+      response = views.bad_request(request)
+
     except HTTPException, e:
       response = e
     except:

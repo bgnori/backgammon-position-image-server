@@ -40,7 +40,7 @@ reverse proxyがやることと、imageserverがやることを分離するこ�
   405 Method Not Allowed => 必要
   406 Not Acceptable => 必要
   407 Proxy Authentication Required => 不要
-  408 Request Timeout => 必要
+  408 Request Timeout => 必要, ブラウザで挙動が違う。FireFoxはBodyを無視する。
   409 Conflict => 不要
   410 Gone => 不要
   411 Length Required => 不要
