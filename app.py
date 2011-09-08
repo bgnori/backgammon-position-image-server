@@ -20,15 +20,36 @@ class Application(object):
       endpoint, values = adapter.match()
       handler = getattr(views, endpoint)
       response = handler(request, **values)
-    except NotFound, e:
+
+      '''4xx'''
+    except NotFound:
       response = views.not_found(request)
-    except Unauthorized, e:
+    except Unauthorized:
       response = views.unauthorized(request)
-    except BadRequest,e :
+    except MethodNotAllowed:
+      response = views.method_not_allowed(request)
+    except NotAcceptable:
+      response = views.not_acceptable(request)
+    except RequestTimeout:
+      response = views.request_timeout(request)
+    except PreconditionFailed:
+      response = views.precondition_failed(request)
+    except RequestEntityTooLarge:
+      response = views.request_entity_too_large(request)
+    except RequestURITooLarge:
+      response = views.request_uri_too_long(request)
+    except UnsupportedMediaType:
+      response = views.unsupported_media_type(request)
+    except ExpectationFailed:
+      response = views.expectation_failed(request)
+    except IAmTeapot:
+      response = views.Im_python(request)
+    except BadRequest:
       response = views.bad_request(request)
 
-    except HTTPException, e:
-      response = e
+    except NotImplemented:
+      response = views.not_implemented(request)
+
     except:
       '''5xx'''
       response =  views.internal_server_error(request)
