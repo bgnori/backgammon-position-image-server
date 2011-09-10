@@ -1,9 +1,12 @@
 from werkzeug import Response
 
 import model 
-from imageresponse import FileResponse, DrawTextResponse
+from imageexceptions import *
+from imageresponse import FileResponse
 
-
+def tests(request):
+  print 'tests:loading  file tests.html'
+  return FileResponse('tests.html', 'text/html', 200)
 
 def list_errors(request):
   f = open('list_errors.html')
@@ -12,46 +15,51 @@ def list_errors(request):
   return Response(b, mimetype='text/html')
 
 def bad_request(request):
-  return DrawTextResponse("400: Bad Request.", (600, 200), mimetype="image/jpeg", status=400)
+  raise BadRequest()
 
 def unauthorized(request):
-  return DrawTextResponse("401: Unauthorized.", (600, 200), mimetype="image/jpeg", status=401)
+  raise Unauthorized()
 
 def not_found(request):
-  return DrawTextResponse("404: No enter found.", (600, 200), mimetype="image/jpeg", status=404)
+  raise NotFound()
 
 def method_not_allowed(request):
-  return DrawTextResponse("405: Method not allowed.", (600, 200),  mimetype="image/jpeg", status=405)
+  raise MethodNotAllowed()
 
 def not_acceptable(request):
-  return DrawTextResponse("406: Not Acceptable.", (600, 200),  mimetype="image/jpeg", status=406)
+  raise NotAcceptable()
 
 def request_timeout(request):
-  return DrawTextResponse("408: Request timeout.", (600, 200),  mimetype="image/jpeg", status=408)
+  raise RequestTimeout()
   
 def precondition_failed(request):
-  return DrawTextResponse("412: Precondition Failed", (600, 200),  mimetype="image/jpeg", status=412)
+  raise PreconditionFailed()
 
 def request_entity_too_large(request):
-  return DrawTextResponse("413: Request Entity Too Large", (600, 200),  mimetype="image/jpeg", status=413)
+  raise RequestEntityTooLarge()
 
 def request_uri_too_long(request):
-  return DrawTextResponse("414: Requested URI Too Long",  (600, 200), mimetype="image/jpeg", status=414)
+  raise RequestURITooLarge()
 
 def unsupported_media_type(request):
-  return DrawTextResponse("415: Unsupported media type", (600, 200),  mimetype="image/jpeg", status=415)
+  raise UnsupportedMediaType()
 
 def expectation_failed(request):
-  return DrawTextResponse("417: expectation failed.", (600, 200), mimetype="image/jpeg", status=417)
+  raise ExpectationFailed()
 
 def Im_python(request):
-  return DrawTextResponse("418: I'm python.", (600, 200), mimetype="image/jpeg", status=418)
+  raise ImATeapot()
 
 def internal_server_error(request):
-  return FileResponse("failsnake.jpg", mimetype="image/jpeg", status=500)
+  raise InternalServerError()
+  #return FileResponse("failsnake.jpg", mimetype="image/jpeg", status=500)
 
 def not_implemented(request):
-  return DrawTextResponse("501: No implemented.", (600, 200), mimetype="image/jpeg", status=501)
+  raise NotImplemented()
+
+
+
+
 
 def image(request):
   '''

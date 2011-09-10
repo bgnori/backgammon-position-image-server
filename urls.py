@@ -6,6 +6,7 @@ url_map = Map([
   Rule("/image", endpoint="image"), #old dog
   Rule("/gnubg", endpoint="gnubg"),
   Rule("/xgid", endpoint="xgid"),
+  Rule("/tests", endpoint="tests"),
   Rule("/errors/", endpoint="list_errors"),
   Rule("/errors/400", endpoint="bad_request"),
   Rule("/errors/401", endpoint="unauthorized"),

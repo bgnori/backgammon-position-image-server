@@ -25,6 +25,20 @@ reverse proxyがやることと、imageserverがやることを分離するこ�
 手作りするか、PILでon the flyで生成するか。
 サイズがあるので、生成が好ましいが上限が必要。
 
+HTTPExceptionの子クラスとmixinするクラス(ImageMixin)を作る。
+BadRequestなどとImageMixinを継承した具象クラスをraise時に使う。
+
+5xxはhandler側で対処。
+スタックトレースをimageに書き込めるとうれしい。
+
+imageのformatはpngとjpegをサポートしたい。
+
+
+get_headersは子クラス側のものをよんで、そこのcontent typeを書き換える。
+
+
+
+
 1xx Infomatonal => イラネ
 
 2xx Success => 生成したデータを返すので考えない。
