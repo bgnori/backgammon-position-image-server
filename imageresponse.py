@@ -1,6 +1,5 @@
 import StringIO
 import os
-import re
 
 
 from werkzeug import Response

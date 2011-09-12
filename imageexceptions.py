@@ -1,48 +1,23 @@
-import StringIO
-
-import Image
-import ImageDraw
-import ImageFont
-
+import re
 from werkzeug.wrappers import BaseResponse
 from werkzeug.exceptions import HTTPException
 from werkzeug._internal import _get_environ
 from werkzeug.utils import escape
 from werkzeug import exceptions
 
-from tonic.cache import memoize, hub
-from tonic.cache.imp import *
 
 from mime import mime2fext
-
+from layout import render
 
 
 DEFAULT_IMAGE_SIZE = (600, 200)
 #DEFAULT_IMAGE_SIZE = (1200, 400)
 WperH_RATIO_RANGE = (0.5, 4.0)
 
-
-@memoize(hub)
-def calc_font_size(font_name, size, text):
-  #fsize = size[1]
-
-  fsize = 20
-  font = load_font(font_name, fsize)
-  w, h = font.getsize(text)
-  while w >= size[0] or h >= size[1]:
-    fsize = fsize - 1
-    if fsize < 8: # FIXME
-      return None, w, h
-    font = load_font(font_name, fsize)
-    w, h = font.getsize(text)
-  return fsize, w, h
-
-@memoize(hub)
-def load_font(uri, size):
-  assert uri
-  font = ImageFont.truetype(uri, size)
-  return font
-
+to_remove = re.compile(r'<p>')
+to_split = re.compile(r'</p>')
+def html2lines(html):
+  return tuple(to_split.split(to_remove.sub('', html)))
 
 class ImageMixin(object):
   def get_mimetype(self, environ):
@@ -57,35 +32,14 @@ class ImageMixin(object):
 
   def get_body(self, environ):
     mimetype = self.get_mimetype(environ)
-    text = ("%(code)s: %(name)s"
-    #        "%(description)s\n"
+    text = (("%(code)s: %(name)s"
     ) % {
             'code':         self.code,
             'name':         escape(self.name),
-    #        'description':  self.get_description(environ)
-    }
-    buf = StringIO.StringIO()
+    },) + html2lines(self.get_description(environ))
 
     size = DEFAULT_IMAGE_SIZE #600, 200) #FIXME
-    img = Image.new('RGBA', size)
-    draw = ImageDraw.Draw(img)
-
-
-    x, y = 10, 10 
-    font_name = 'DejaVuLGCSans-Bold.ttf'
-    fsize, w, h = calc_font_size(font_name, size, text)
-    if fsize is None: #FIXME
-      return None
-
-    font = load_font(font_name, fsize)
-    xoff = (size[0] - w)/2
-    yoff = (size[1] - h)/2
-
-    draw.text((x+xoff, y+yoff), text, font=font)#, fill='black')
-
-    img.save(buf, mime2fext(mimetype))
-    
-    return  buf.getvalue()
+    return render(text, mimetype, size, 12)
 
   def rewritten_headers(self, environ):
     
