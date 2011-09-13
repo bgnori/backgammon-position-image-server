@@ -36,6 +36,8 @@ imageのformatはpngとjpegをサポートしたい。
 
 get_headersは子クラス側のものをよんで、そこのcontent typeを書き換える。
 
+textのlayout結構複雑。
+だらだらしてしまうのでfont sizeくらい使えるようにしたいが・・・。
 
 
 

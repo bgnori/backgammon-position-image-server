@@ -7,17 +7,18 @@ from werkzeug import exceptions
 
 
 from mime import mime2fext
-from layout import render
+from layout import Render
 
 
-DEFAULT_IMAGE_SIZE = (600, 200)
+DEFAULT_IMAGE_SIZE = (400, 200)
 #DEFAULT_IMAGE_SIZE = (1200, 400)
 WperH_RATIO_RANGE = (0.5, 4.0)
 
 to_remove = re.compile(r'<p>')
 to_split = re.compile(r'</p>')
 def html2lines(html):
-  return tuple(to_split.split(to_remove.sub('', html)))
+  for t in to_split.split(to_remove.sub('', html)):
+    yield t
 
 class ImageMixin(object):
   def get_mimetype(self, environ):
@@ -31,15 +32,21 @@ class ImageMixin(object):
   #def get_description(self, environ):
 
   def get_body(self, environ):
+    r = Render(DEFAULT_IMAGE_SIZE)
     mimetype = self.get_mimetype(environ)
-    text = (("%(code)s: %(name)s"
-    ) % {
+
+    r.Box(("%(code)s: %(name)s"
+        ) % {
             'code':         self.code,
             'name':         escape(self.name),
-    },) + html2lines(self.get_description(environ))
+        },
+        (5, 5),
+        "DejaVuLGCSans-Bold.ttf", 16)
 
-    size = DEFAULT_IMAGE_SIZE #600, 200) #FIXME
-    return render(text, mimetype, size, 12)
+    for line in html2lines(self.get_description(environ)):
+      r.Box(line, (3, 3), "DejaVuLGCSans-Bold.ttf", 10)
+
+    return r.render(mimetype)
 
   def rewritten_headers(self, environ):
     

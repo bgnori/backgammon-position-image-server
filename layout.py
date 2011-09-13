@@ -29,6 +29,12 @@ def add(*xys):
   return tuple(map(sum, zip(*xys)))
 
 
+@memoize(hub)
+def load_font(uri, size):
+  assert uri
+  font = ImageFont.truetype(uri, size)
+  return font
+
 class DC(object):
   def __init__(self, size):
     self.size = size
@@ -37,11 +43,6 @@ class DC(object):
     self.boxes = []
     self.current = [0, 0]
   
-  @memoize(hub)
-  def load_font(self, uri, size):
-    assert uri
-    font = ImageFont.truetype(uri, size)
-    return font
 
   def getvalue(self, mimetype):
     buf = StringIO.StringIO()
@@ -69,7 +70,7 @@ class DC(object):
     end = len(line)
     p = box.get_param()
     for n, c in enumerate(line):
-      if c not in ' \t\v\n' and n < end:
+      if c not in ' \t\v\n' :
         pass
       else:
         b = self.make_box(p, text=line[:n])
@@ -164,11 +165,16 @@ class Model(object):
 
 
 class Box(Model):
-  def __init__(self, text, topleft, padding, font):
+  def __init__(self, text, topleft, padding, fontname=None, fsize=None, font=None):
     Model.__init__(self, padding)
     self.topleft = topleft
     self.text = text
-    self.font = font
+    if font:
+      self.font = font
+    elif fontname and fsize:
+      self.font = load_font(fontname, fsize)
+    else:
+      raise
 
   def getsize(self):
     return self.font.getsize(self.text)
@@ -187,18 +193,16 @@ class Box(Model):
     dc.draw.text(start, self.text, font=self.font)#, fill='black')
 
 
-def render(lines, mimetype, size, fsize):
-
-    padding = 10, 10 
-    dc = DC(size)
-
-    font_name = 'DejaVuLGCSans-Bold.ttf'
-    font = dc.load_font(font_name, fsize)
+class Render(object):
+  def __init__(self, size):
+    self.size = size
+    self.dc = DC(size)
   
-    for line in lines:
-      dc.add('text', text=line, padding=padding, font=font)
+  def Box(self, text, padding, fontname, fsize):
+    self.dc.add('text', text=text, padding=padding, fontname=fontname, fsize=fsize)
 
-    dc.render()
-    return dc.getvalue(mimetype)
+  def render(self, mimetype):
+    self.dc.render()
+    return self.dc.getvalue(mimetype)
 
 
