@@ -5,20 +5,17 @@ from imageexceptions import *
 from imageresponse import FileResponse
 
 def index(request):
-  return FileResponse('index.html', 'text/html', 200)
+  return FileResponse('html/index.html', 'text/html', 200)
 
 def about(request):
-  return FileResponse('about.html', 'text/html', 200)
+  return FileResponse('html/about.html', 'text/html', 200)
 
 def tests(request):
   print 'tests:loading  file tests.html'
-  return FileResponse('tests.html', 'text/html', 200)
+  return FileResponse('html/tests.html', 'text/html', 200)
 
 def list_errors(request):
-  f = open('list_errors.html')
-  b = f.read()
-  f.close()
-  return Response(b, mimetype='text/html')
+  return FileResponse('html/list_errors.html', 'text/html', 200)
 
 def bad_request(request):
   raise BadRequest()
@@ -58,7 +55,7 @@ def Im_python(request):
 
 def internal_server_error(request):
   raise InternalServerError()
-  #return FileResponse("failsnake.jpg", mimetype="image/jpeg", status=500)
+  #return FileResponse("resource/failsnake.jpg", mimetype="image/jpeg", status=500)
 
 def not_implemented(request):
   raise NotImplemented()

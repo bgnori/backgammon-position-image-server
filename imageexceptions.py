@@ -41,10 +41,10 @@ class ImageMixin(object):
             'name':         escape(self.name),
         },
         (5, 5),
-        "DejaVuLGCSans-Bold.ttf", 16)
+        "resource/DejaVuLGCSans-Bold.ttf", 16)
 
     for line in html2lines(self.get_description(environ)):
-      r.Box(line, (3, 3), "DejaVuLGCSans-Bold.ttf", 10)
+      r.Box(line, (3, 3), "resource/DejaVuLGCSans-Bold.ttf", 10)
 
     return r.render(mimetype)
 
