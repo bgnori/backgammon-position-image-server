@@ -4,6 +4,12 @@ import model
 from imageexceptions import *
 from imageresponse import FileResponse
 
+def index(request):
+  return FileResponse('index.html', 'text/html', 200)
+
+def about(request):
+  return FileResponse('about.html', 'text/html', 200)
+
 def tests(request):
   print 'tests:loading  file tests.html'
   return FileResponse('tests.html', 'text/html', 200)
