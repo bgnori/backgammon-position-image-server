@@ -1,11 +1,20 @@
+import urlparse
+
 from werkzeug import Response
 
 import model 
 from imageexceptions import *
-from imageresponse import FileResponse
+from imageresponse import FileResponse, DocumentRoot
+
+import validator 
 
 def index(request):
   return FileResponse('html/index.html', 'text/html', 200)
+
+def usersguide(request, **kws):
+  path = kws.get('path', 'index.html')
+  print request.base_url, path
+  return DocumentRoot('./doc/build/html/', path, 200)
 
 def about(request):
   return FileResponse('html/about.html', 'text/html', 200)
@@ -63,7 +72,12 @@ def not_implemented(request):
 
 
 
-
+@validator.stringLength('gnubgid', 27)
+@validator.oneOf('css', ('minimal', 'safari','kotobuki',  'nature',
+ 'flower', 'neon', 'deutsche'))
+@validator.oneOf('format', ('png', 'jpeg','gif'))
+@validator.intRange('width', (50, 1000))
+@validator.intRange('height', (50, 1000))
 def image(request):
   '''
     /image?gnubgid=ZrsFAFju3QECCA%3AAgEAAAAAAAAA&height=450&width=600&css=deutsche&format=png
@@ -87,6 +101,13 @@ def image(request):
   return Response(img, mimetype=mimetype)
   
 
+@validator.stringLength('mid', 12)
+@validator.stringLength('pid', 14)
+@validator.oneOf('css', ('minimal', 'safari','kotobuki',  'nature',
+ 'flower', 'neon', 'deutsche'))
+@validator.oneOf('format', ('png', 'jpeg','gif'))
+@validator.intRange('width', (50, 1000))
+@validator.intRange('height', (50, 1000))
 def gnubg(request):
   '''
     /gnubg?pid= ZrsFAFju3QECCA&mid=AgEAAAAAAAAA&height=450&width=600&css=deutsche&format=png
@@ -111,9 +132,15 @@ def gnubg(request):
 
   return Response(img, mimetype=mimetype)
 
+@validator.stringLength('xgid', len('-b-BBBD-----bC---c-dbBb---:0:0:1:00:0:0:0:5:10'), hint = ' 1) May be CRLF in the end. 2) Not url encoded.')
+@validator.oneOf('css', ('minimal', 'safari','kotobuki',  'nature',
+ 'flower', 'neon', 'deutsche'))
+@validator.oneOf('format', ('png', 'jpeg','gif'))
+@validator.intRange('width', (50, 1000))
+@validator.intRange('height', (50, 1000))
 def xgid(request):
   '''
-    /xgid?xgid=-b-BBBD-----bC---c-dbBb---%3A0%3A0%3A1%3A00%3A0%3A0%3A0%3A5%3A10%0D%0A
+    /xgid?xgid=-b-BBBD-----bC---c-dbBb---%3A0%3A0%3A1%3A00%3A0%3A0%3A0%3A5%3A10
 
     (urlencoded XGID=-b-BBBD-----bC---c-dbBb---:0:0:1:00:0:0:0:5:10)
   '''

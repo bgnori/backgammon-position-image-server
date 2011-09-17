@@ -2,6 +2,8 @@ from werkzeug.routing import Map, Rule
 
 url_map = Map([
   Rule("/", endpoint="index"),
+  Rule("/usersguide/", endpoint="usersguide"),
+  Rule("/usersguide/<path:path>", endpoint="usersguide"),
   Rule("/about", endpoint="about"),
   Rule("/image", endpoint="image"), #old dog
   Rule("/gnubg", endpoint="gnubg"),

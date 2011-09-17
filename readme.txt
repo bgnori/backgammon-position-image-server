@@ -1,4 +1,5 @@
 
+もやはreadmeではない。ただの開発メモ
 
 Started from  sample from http://www.void.in/wiki/Python/Werkzeug
 
@@ -38,7 +39,9 @@ get_headersは子クラス側のものをよんで、そこのcontent typeを書
 
 textのlayout結構複雑。
 だらだらしてしまうのでfont sizeくらい使えるようにしたいが・・・。
+=> やった。
 
+user guideが必要だ。
 
 
 1xx Infomatonal => イラネ
