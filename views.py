@@ -16,12 +16,8 @@ def usersguide(request, **kws):
   print request.base_url, path
   return DocumentRoot('./doc/build/html/', path, 200)
 
-def about(request):
-  return FileResponse('html/about.html', 'text/html', 200)
-
-def tests(request):
-  print 'tests:loading  file tests.html'
-  return FileResponse('html/tests.html', 'text/html', 200)
+def addon(request):
+  return FileResponse('html/addon.html', 'text/html', 200)
 
 def list_errors(request):
   return FileResponse('html/list_errors.html', 'text/html', 200)
