@@ -192,6 +192,16 @@ When parameters are not specified or baddly specified, it reports error details:
 
   .. image:: ../image?gnubgid=sGsQMDWYuxA%3AcInxAAAAAAAA&width=300&height=200&css=nature&format=png
 
+ * bad data
+  * bad position id
+
+  .. image:: ../image?gnubgid=s11QMDWYuxkDQA%3AcInxAAAAAAAA&width=300&height=200&css=nature&format=png
+
+  * bad match id
+  .. image:: ../image?gnubgid=sGsQMDWYuxkDQA%3AcInxAAAAAAAA&width=300&height=200&css=nature&format=png
+
+  .. image:: ../image?gnubgid=sGsQMDWYuxkDQA%3A1InxAAAAA111&width=300&height=200&css=nature&format=png
+
  
  * no width
   .. image:: ../image?gnubgid=sGsQMDWYuxkDQA%3AcInxAAAAAAAA&height=200&css=nature&format=png
@@ -287,6 +297,17 @@ When parameters are not specified or baddly specified, it reports error details:
  .. image:: ../errors/501
 
 
+How to report bugs
+==================
+
+Please send mail to bgnori@gmail.com, with:
+
+ * subject of "bug at image.backgammonbase.com". 
+
+ * your request, i.e. http://image.backgammonbase.com/... etc.
+
+ * describe the phenomenon you got.
+
 
 About
 =====
@@ -296,5 +317,3 @@ Copyright 2011 Noriyuki Hosaka(bgnori@gmail.com)
 Commercial Use: Need to pay me. please contact with above address.
 No charge for non-comercial use or during development/domestic use.
 If you are making above 1000requests/hr, Please contact. 
-
-

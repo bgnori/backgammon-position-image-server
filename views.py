@@ -2,6 +2,8 @@ import urlparse
 
 from werkzeug import Response
 
+from bglib.encoding import EncodingError as PossibleBadRequest
+
 import model 
 from imageexceptions import *
 from imageresponse import FileResponse, DocumentRoot
@@ -67,7 +69,7 @@ def not_implemented(request):
 
 
 
-
+@validator.method(('GET',))
 @validator.stringLength('gnubgid', 27)
 @validator.oneOf('css', ('minimal', 'safari','kotobuki',  'nature',
  'flower', 'neon', 'deutsche'))
@@ -80,13 +82,18 @@ def image(request):
 
   '''
 
-  img = model.image(
-    request.args.get('gnubgid'),
-    request.args.get('css'),
-    request.args.get('format'),
-    int(request.args.get('width')),
-    int(request.args.get('height')),
-  )
+  try:
+    img = model.image(
+      request.args.get('gnubgid'),
+      request.args.get('css'),
+      request.args.get('format'),
+      int(request.args.get('width')),
+      int(request.args.get('height')),
+    )
+  except PossibleBadRequest, e:
+    raise BadRequest(str(e))
+  except Exception, e:
+    raise InternalServerError(str(e))
 
   mimetype = {
     'jpeg':'image/jpeg',
@@ -97,6 +104,7 @@ def image(request):
   return Response(img, mimetype=mimetype)
   
 
+@validator.method(('GET',))
 @validator.stringLength('mid', 12)
 @validator.stringLength('pid', 14)
 @validator.oneOf('css', ('minimal', 'safari','kotobuki',  'nature',
@@ -112,13 +120,18 @@ def gnubg(request):
 
   gnubgid = request.args.get('pid')+':'+request.args.get('mid')
 
-  img = model.image(
-    gnubgid,
-    request.args.get('css'),
-    request.args.get('format'),
-    int(request.args.get('width')),
-    int(request.args.get('height')),
-  )
+  try:
+    img = model.image(
+      gnubgid,
+      request.args.get('css'),
+      request.args.get('format'),
+      int(request.args.get('width')),
+      int(request.args.get('height')),
+    )
+  except PossibleBadRequest, e:
+    raise BadRequest(str(e))
+  except Exception, e:
+    raise InternalServerError(str(e))
 
   mimetype = {
     'jpeg':'image/jpeg',
@@ -128,7 +141,7 @@ def gnubg(request):
 
   return Response(img, mimetype=mimetype)
 
-@validator.stringLength('xgid', len('-b-BBBD-----bC---c-dbBb---:0:0:1:00:0:0:0:5:10'), hint = ' 1) May be CRLF in the end. 2) Not url encoded.')
+@validator.method(('GET',))
 @validator.oneOf('css', ('minimal', 'safari','kotobuki',  'nature',
  'flower', 'neon', 'deutsche'))
 @validator.oneOf('format', ('png', 'jpeg','gif'))
@@ -141,13 +154,18 @@ def xgid(request):
     (urlencoded XGID=-b-BBBD-----bC---c-dbBb---:0:0:1:00:0:0:0:5:10)
   '''
 
-  img = model.byxgid(
-    request.args.get('xgid'),
-    request.args.get('css'),
-    request.args.get('format'),
-    int(request.args.get('width')),
-    int(request.args.get('height')),
-  )
+  try:
+    img = model.byxgid(
+      request.args.get('xgid'),
+      request.args.get('css'),
+      request.args.get('format'),
+      int(request.args.get('width')),
+      int(request.args.get('height')),
+    )
+  except PossibleBadRequest, e:
+    raise BadRequest(str(e))
+  except Exception, e:
+    raise InternalServerError(str(e))
 
   mimetype = {
     'jpeg':'image/jpeg',

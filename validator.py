@@ -6,7 +6,7 @@ from imageexceptions import BadRequest
 
 
 def method(acceptables):
-  def entangle(f):
+  def entangle(func):
     def method(func, request):
       if request.method in acceptables:
         return func(request)
