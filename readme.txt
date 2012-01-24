@@ -1,3 +1,15 @@
+作業再開
+
+pipとdistributeを混用する。
+pipはパッケージ管理、ditributeは setup developのために使う。
+
+他のソースに依存しているが、それはpipのsource installを使う。
+pip install git+ssh://git@github.com:bgnori/bglib.git
+
+依存しているpackageも同じ書き方にしないとダメ。
+つまりbglibとtonicも直さないとイケない。
+
+
 
 もやはreadmeではない。ただの開発メモ
 
